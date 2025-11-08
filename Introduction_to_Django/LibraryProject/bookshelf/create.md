@@ -5,9 +5,9 @@ from bookshelf.models import Book
 # Create a new Book instance
 
 book = Book.objects.create(
-title="Animal farm",
+title="1984",
 author="George Orwell",
-publication_year=1945
+publication_year=1949
 )
 
 # Display the created book
