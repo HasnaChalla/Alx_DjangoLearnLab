@@ -8,7 +8,8 @@ for book in books:
 
 # List all books in a library.
 
-library = Library.objects.get(all())
+library_name = "Central Library"  # Example library name
+library = Library.objects.get(name=library_name)
 library_books = library.books.all()
 for book in library_books:
     print("Book:", book.title)
