@@ -18,8 +18,14 @@ for book in library_books:
 
 # Retrieve the librarian for a library.
 library_name = "Central Library"
-# First get the library
-library = Library.objects.get(name=library_name)
-# Then get the librarian for this library
-librarian = Librarian.objects.select_related('library').get(library=library)
-print(f"{librarian.name} works at {librarian.library.name}")
+try:
+    # First get the library
+    library = Library.objects.get(name=library_name)
+    # Then get the librarian for this library using select_related for efficiency
+    librarian = Librarian.objects.select_related(
+        'library').get(library=library)
+    print(f"{librarian.name} works at {librarian.library.name}")
+except Library.DoesNotExist:
+    print(f"Library '{library_name}' not found")
+except Librarian.DoesNotExist:
+    print(f"No librarian found for {library_name}")
