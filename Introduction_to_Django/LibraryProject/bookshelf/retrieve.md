@@ -4,7 +4,7 @@ from bookshelf.models import Book
 
 # Retrieve the book by ID
 
-book = Book.objects.get(title="Animal farm")
+book = Book.objects.get(title="1984")
 
 # Display the retrieved book
 
