@@ -2,9 +2,11 @@ from .models import *
 
 # Query all books by a specific author.
 
-books = Book.objects.select_related("author").all()
+author_name = "J.K. Rowling"  # Example author name
+author = Author.objects.get(name=author_name)
+books = Book.objects.filter(author=author)
 for book in books:
-    print(book.title, "by", book.author.name)
+    print(book.title, "by", author.name)
 
 # List all books in a library.
 
@@ -15,6 +17,9 @@ for book in library_books:
     print("Book:", book.title)
 
 # Retrieve the librarian for a library.
-
-Librarian = Librarian.select_related("library")
-print(Librarian.name, "works at", Librarian.library.name)
+library_name = "Central Library"
+# First get the library
+library = Library.objects.get(name=library_name)
+# Then get the librarian for this library
+librarian = Librarian.objects.select_related('library').get(library=library)
+print(f"{librarian.name} works at {librarian.library.name}")
