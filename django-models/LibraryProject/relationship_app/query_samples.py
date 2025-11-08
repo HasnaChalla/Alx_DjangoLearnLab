@@ -1,12 +1,19 @@
 from .models import *
 
+# Query all books by a specific author.
+
 books = Book.objects.select_related("author").all()
 for book in books:
     print(book.title, "by", book.author.name)
 
-books = Book.objects.prefetch_related("library_set").all()
-for book in books:
+# List all books in a library.
+
+library = Library.objects.get(all())
+library_books = library.books.all()
+for book in library_books:
     print("Book:", book.title)
+
+# Retrieve the librarian for a library.
 
 Librarian = Librarian.select_related("library")
 print(Librarian.name, "works at", Librarian.library.name)
