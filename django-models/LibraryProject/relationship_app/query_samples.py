@@ -1,4 +1,4 @@
-from .models import *
+from relationship_app.models import Author, Book, Library, Librarian
 
 # Query all books by a specific author.
 
@@ -22,8 +22,7 @@ try:
     # First get the library
     library = Library.objects.get(name=library_name)
     # Then get the librarian for this library using select_related for efficiency
-    librarian = Librarian.objects.select_related(
-        'library').get(library=library)
+    librarian = Librarian.objects.get(library="library")
     print(f"{librarian.name} works at {librarian.library.name}")
 except Library.DoesNotExist:
     print(f"Library '{library_name}' not found")
