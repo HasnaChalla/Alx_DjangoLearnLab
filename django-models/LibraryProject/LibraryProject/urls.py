@@ -24,4 +24,5 @@ urlpatterns = [
     path('accounts/profile/',
          TemplateView.as_view(template_name='accounts/profile.html'),
          name='profile'),
+    path('relationship/', include('relationship_app.urls')),
 ]
