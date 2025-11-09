@@ -28,18 +28,17 @@ class LibraryDetailView(DetailView):
 # === AUTHENTICATION VIEWS ===
 
 
-def register(request):
-    # Show registration form
-    return render(request, 'relationship_app/register.html')
-
-
-class UserRegisterView(CreateView):
+class RegistrationView(CreateView):
     form_class = UserCreationForm
-    template_name = 'relationship_app/register.html'
     success_url = reverse_lazy('login')
+    template_name = 'registration/register.html'
 
+
+register = RegistrationView.as_view()
 
 # Login Django's built-in class-based view
+
+
 class UserLoginView(LoginView):
     template_name = 'relationship_app/login.html'
 
