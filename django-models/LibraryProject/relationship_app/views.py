@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import login
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
@@ -25,6 +26,11 @@ class LibraryDetailView(DetailView):
         context['books'] = self.object.books.all()
         return context
 # === AUTHENTICATION VIEWS ===
+
+
+def register(request):
+    # Show registration form
+    return render(request, 'relationship_app/register.html')
 
 
 class UserRegisterView(CreateView):
