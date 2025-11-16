@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from .models import Book
 from django.contrib.auth.decorators import permission_required
+from .forms import ExampleForm
 # Create your views here.
 
 
