@@ -24,7 +24,7 @@ class CustomUser(AbstractUser):
         permissions = [
             ("can_view", "Can view Profile"),
             ("can_create", "can create User"),
-            ("can_edit", "can edit User")
+            ("can_edit", "can edit User"),
             ("can_delete_book", "Can delete User"),
         ]
 
@@ -41,7 +41,7 @@ class Editors(models.Group):
     class Meta:
         permissions = [
             ("can_create", "can create User"),
-            ("can_edit", "can edit User")
+            ("can_edit", "can edit User"),
         ]
 
 
@@ -57,6 +57,6 @@ class Admins(models.Group):
         permissions = [
             ("can_view", "Can view Profile"),
             ("can_create", "can create User"),
-            ("can_edit", "can edit User")
+            ("can_edit", "can edit User"),
             ("can_delete_book", "Can delete User"),
         ]
