@@ -1,7 +1,9 @@
 from django.contrib import admin
 from .models import Book
-
+from .models import CustomUser
+from .models import CustomUserAdmin
 admin.site.register(Book)
+admin.site.register(CustomUser, CustomUserAdmin)
 # Register your models here.
 
 
