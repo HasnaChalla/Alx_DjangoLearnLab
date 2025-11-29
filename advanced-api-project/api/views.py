@@ -4,32 +4,32 @@ from .models import Book
 from .serializers import BookSerializer
 
 # Create your views here.
-# List/Create all books (GET / POST)
-
-
-class BookListCreateView(generics.ListCreateAPIView):
+# Book list view [GET]
+class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    # Anyone can list, only authenticated can create
+    permission_classes = [permissions.AllowAny]
 
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            return [permissions.IsAuthenticated()]
-        return [permissions.AllowAny()]
-
-# Retrieve/Update/Delete single book (GET / PUT / DELETE)
-
-
-class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+# Book detail view [GET]
+class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    # Only authenticated users can update/delete; anyone can GET
+    permission_classes = [permissions.AllowAny]
 
-    def get_permissions(self):
-        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
-            return [permissions.IsAuthenticated()]
-        return [permissions.AllowAny()]
+# Book create view [POST]
+class BookCreateView(generics.CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-# -- Comments --
-# DRF’s generic views like ListCreateAPIView and RetrieveUpdateDestroyAPIView streamline CRUD operations.
-# get_permissions() allows custom handling, e.g., restricting unsafe methods to authenticated users.
+# Book update view [PUT, PATCH]
+class BookUpdateView(generics.UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+# Book delete view [DELETE]
+class BookDeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
