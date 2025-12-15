@@ -1,25 +1,14 @@
 from django.urls import path
 from . import views
-from .views import (
-    PostListView,
-    PostDetailView,
-    PostCreateView,
-    PostUpdateView,
-    PostDeleteView
-)
+
+app_name = 'blog'
 
 urlpatterns = [
-    # Authentication URLs
-    path('login/', views.user_login, name='login'),
-    path('logout/', views.user_logout, name='logout'),
-    path('register/', views.register, name='register'),
-    path('profile/', views.profile, name='profile'),
-    
-    # Blog Post URLs
-    path('', PostListView.as_view(), name='post-list'),
-    path('posts/', PostListView.as_view(), name='posts'),
-    path('posts/new/', PostCreateView.as_view(), name='post-create'),
-    path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
-    path('posts/<int:pk>/edit/', PostUpdateView.as_view(), name='post-update'),
-    path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+    path('', views.PostListView.as_view(), name='post-list'),
+    path('posts/new/', views.PostCreateView.as_view(), name='post-create'),
+    path('posts/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),
+    path('posts/<int:pk>/edit/', views.PostUpdateView.as_view(), name='post-update'),
+    path('posts/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'),
+    path('tags/<str:tag_name>/', views.TagListView.as_view(), name='posts-by-tag'),
+    path('search/', views.SearchResultsView.as_view(), name='search-results'),
 ]
