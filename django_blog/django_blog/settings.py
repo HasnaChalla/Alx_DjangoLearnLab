@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'crispy_forms',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -119,8 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
-
+STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -135,9 +136,10 @@ LOGIN_URL = 'login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Login settings
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'profile'
-LOGOUT_REDIRECT_URL = 'login'
 
+LOGIN_REDIRECT_URL = 'blog:post-list'
+LOGOUT_REDIRECT_URL = 'blog:post-list'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Messages framework (should already be in INSTALLED_APPS)
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
