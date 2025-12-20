@@ -61,8 +61,8 @@ class LikePostView(generics.GenericAPIView):
 
         if post.author != request.user:
             Notification.objects.create(
-                recipient=post.author,  # The author gets the alert
-                actor=request.user,  # caused the alert
+                recipient=post.author,
+                actor=request.user,
                 verb="liked your post",
                 target=post
             )
