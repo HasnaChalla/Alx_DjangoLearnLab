@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q%bn%=a0r!7swhd9j1@o-bxjxxbtkuu_69k*&x@0vew_nw2opx'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'django-insecure-change-this-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 
 # Application definition
@@ -40,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders', ,
     'accounts',
     'posts',
     'notifications',
@@ -47,6 +60,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -139,10 +153,41 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = 'static/'
+# WhiteNoise configuration for serving static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = os.environ.get(
+    'CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+CORS_ALLOW_CREDENTIALS = True
+
+# Security Settings for Production
+if not DEBUG:
+    # HTTPS and Security Headers
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_SSL_REDIRECT = True
+
+    # Session and CSRF Security
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_HTTPONLY = True
+
+    # HSTS (HTTP Strict Transport Security)
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
