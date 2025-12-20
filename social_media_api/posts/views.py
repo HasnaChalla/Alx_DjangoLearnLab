@@ -1,16 +1,15 @@
 from rest_framework import viewsets, permissions, filters, generics, status
 from .models import Post, Comment, Like
 from notifications.models import Notification
-
+from rest_framework import permissions
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsAuthorOrReadOnly
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-# Create your views here.
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
@@ -29,12 +28,17 @@ class CommentViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
 
     def perform_create(self, serializer):
+
         comment = serializer.save(author=self.request.user)
 
         post = comment.post
         if post.author != self.request.user:
             Notification.objects.create(
-                recipient=post.author, actor=self.request.user, verb="commented on your post", target=comment)
+                recipient=post.author,
+                actor=self.request.user,
+                verb="commented on your post",
+                target=comment
+            )
 
 
 class FeedView(generics.ListAPIView):
@@ -61,8 +65,8 @@ class LikePostView(generics.GenericAPIView):
 
         if post.author != request.user:
             Notification.objects.create(
-                recipient=post.author,
-                actor=request.user,
+                recipient=post.author,  # The author gets the alert
+                actor=request.user,  # caused the alert
                 verb="liked your post",
                 target=post
             )
