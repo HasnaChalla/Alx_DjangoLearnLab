@@ -1,5 +1,5 @@
 from rest_framework import viewsets, permissions, filters, generics, status
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from notifications.models import Notification
 
 from .serializers import PostSerializer, CommentSerializer
